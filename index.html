@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Bancario - UNI</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+
+ 
+    </style>
+</head>
+<body>
+    <!-- Panel 1 - Header -->
+    <header class="header">
+        <div class="header-left">
+            <a href="#" class="nav-link" id="toggle-menu">
+                <span class="hamburger-icon"></span>
+            </a>
+            <div class="logo">UNICORE</div>
+        </div>
+        <nav class="nav-links">
+            <a href="#" class="nav-link" id="toggle-services">
+                <span class="hamburger-icon"></span>
+            </a>
+            <div class="notification-bell" id="notifications">
+                🔔
+                <span class="notification-badge">3</span>
+            </div>
+            <a href="#" class="nav-link" id="logout">Salir</a>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <!-- Panel 4 - Left Sidebar -->
+        <aside class="left-sidebar" id="leftSidebar">
+            <div class="user-info">
+                <div class="user-avatar">JP</div>
+                <div class="user-details">
+                    <h5>JOSE PEREZ RODRIGUEZ</h5>
+                    <p>Perfil: <b>Operador Auxiliar</b></p>
+                    <p>Regional: <b>La Paz</b></p>
+                    <p>Sucursal: <b>Sucursal 1</b></p>
+                </div>
+            </div>
+            <div class="menu-section">
+                <div class="menu-title">MENÚ PRINCIPAL</div>
+                <div class="menu-item" id="servicios-operativos">
+                    SERVICIOS OPERATIVOS
+                    <div class="submenu" id="submenu-servicios">
+                        <div class="submenu-item" data-service="gestion-cheques">Gestión de Cheques</div>
+                        <div class="submenu-item" data-service="cheques-gerencia">Cheques de Gerencia</div>
+                        <div class="submenu-item" data-service="camara-compensacion">Cámara de Compensación</div>
+                        <div class="submenu-item" data-service="giros-nacionales">Giros Nacionales</div>
+                        <div class="submenu-item" data-service="transferencias-programadas">Transferencias Programadas</div>
+                        <div class="submenu-item" data-service="notas-debito-credito">Notas de Débito y Crédito</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Content Area - Panels 2 & 3 -->
+        <main class="content-area" id="contentArea">
+            <div class="content-header">
+                <!-- <h1 id="page-title">Sistema Bancario - Dashboard</h1> -->
+                <p id="page-subtitle">SERVICIOS OPERATIVOS</p>
+            </div>
+            <div class="content-body">
+                <!-- Panel 2 - Search/Filter Panel (Collapsible) -->
+                <section class="panel-2 hidden" id="panel2">
+                    <div class="panel-2-header" id="panel2Header">
+                        <h3>🔍 Búsqueda y Filtros</h3>
+                        <span class="panel-2-toggle collapsed" id="panel2Toggle">▼</span>
+                    </div>
+                    <div class="panel-2-content collapsed" id="panel2Content">
+                        <p>Seleccione una operación para ver los filtros de búsqueda correspondientes.</p>
+                    </div>
+                </section>
+
+                <!-- Panel 3 - Data List Panel -->
+                <section class="panel-3" id="panel3">
+                    <div class="panel-3-header">
+                        <h2 id="panel3Title">PROCESOS DEL MODULO DE SERVICIOS OPERATIVOS</h2>
+                        <div class="panel-3-actions" id="panel3Actions">
+                            <!-- Actions will be added dynamically -->
+                        </div>
+                    </div>
+                    <div id="content-panel-3">
+                        <div class="card-principal" id="cardPrincipal">
+                            <div class="service-cards">
+                                <div class="service-card submenu-item" data-service="gestion-cheques">
+                                    <h3>Gestión de Cheques</h3>
+                                </div>
+                                <div class="service-card submenu-item" data-service="cheques-gerencia">
+                                    <h3>Cheques de Gerencia</h3>
+                                </div>
+                                <div class="service-card submenu-item" data-service="camara-compensacion">
+                                    <h3>Cámara de Compensación</h3>
+                                </div>
+                                <div class="service-card submenu-item" data-service="giros-nacionales">
+                                    <h3>Giros Nacionales</h3>
+                                </div>
+                                <div class="service-card submenu-item" data-service="transferencias-programadas">
+                                    <h3>Transferencias Programadas</h3>
+                                </div>
+                                <div class="service-card submenu-item" data-service="notas-debito-credito">
+                                    <h3>Notas de Débito y Crédito</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Panel 5 - Right Sidebar -->
+        <aside class="right-sidebar" id="rightSidebar">
+            <div class="operations-header">
+                <span id="operations-title">OPERACIONES</span>
+            </div>
+            <div class="operations-list" id="operationsList">
+                <p style="padding: 20px; color: #666; text-align: center;">
+                    Seleccione un servicio del menú principal
+                </p>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Modal Template -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Título del Modal</h2>
+                <span class="close" id="modal-close">&times;</span>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Content will be loaded here -->
+            </div>
+            <div class="modal-footer" id="modal-footer">
+                <!-- Footer buttons will be added here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Confirm Template -->
+    <div id="modal-confirm" class="modal">
+        <div class="modal-content modal-content-confirm">
+            <div class="modal-header">
+                <h2 id="modal-title-confirm">Título del Modal</h2>
+                <span class="close" id="modal-close">&times;</span>
+            </div>
+            <div class="modal-body" id="modal-body-confirm">
+                <!-- Content will be loaded here -->
+            </div>
+            <div class="modal-footer" id="modal-footer-confirm">
+                <!-- Footer buttons will be added here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+    $(document).ready(() => {
+        console.log('Sistema Bancario - UNI');
+
+        localStorage.setItem('servicioSeleccionado', JSON.stringify({}));
+        localStorage.setItem('operacionSeleccionada', JSON.stringify({}));
+
+            // Keyboard shortcuts
+            $(document).keydown((e) => {
+                //console.log(e.ctrlKey, e.keyCode, e);
+                // Ctrl + N to add new row
+                if (e.ctrlKey && e.keyCode ===  80) {
+                e.preventDefault();
+                //window.print();
+                //console.log('Sistema Bancario - UNI -22');
+                printReport();
+                }
+
+                
+            });
+        });
+        //$(document).ready(function() {
+
+
+
+
+            // Operations data for each service
+            const operationsData = {
+                'gestion-cheques': [
+                    'Solicitud',
+                    'Impresión',
+                    'Reimpresión',
+                    'Autorización',
+                    'Reportes'
+                ],
+                'cheques-gerencia': [
+                    'Solicitud',
+                    'Impresión',
+                    'Reimpresión',
+                    'Autorización',
+                    'Reversión',
+                    'Reportes'
+                ],
+                'camara-compensacion': [
+                    'Solicitud Cheque Individual/ACCL',
+                    'Autorización',
+                    'Rechazo',
+                    'Liberación',
+                    'Conciliación',
+                    'Reportes'
+                ],
+                'giros-nacionales': [
+                    'Solicitudes',
+                    //'Habilitación',
+                    //'Modificación',
+                    'Autorización',
+                    'Impresion',
+                    'Reportes'
+                ],
+                'transferencias-programadas': [
+                    'Habilitación/Suspensión TP',
+                    'Registro Programación y Aplicación',
+                    'Autorización',
+                    'Conciliación',
+                    'Reportes'
+                ],
+                'notas-debito-credito': [
+                    'Solicitud',
+                    'Autorización',
+                    'Impresión',
+                    'Reportes'
+                ]
+            };
+
+            
+                const servicesModuloServiciosOperativos = [
+                    {
+                        servicio: 'gestion-cheques',
+                        titulo: 'Gestión de Cheques',
+                        operaciones: [
+                            {operacion:'Solicitud', tituloPanel3: 'Solicitudes', mostrarBotonRegistro: true, estado: 'SOLICITADO', mode: 'edit'},
+                            {operacion:'Impresión', tituloPanel3: 'Impresión', mostrarBotonRegistro: false, estado: 'SOLICITADO|APROBADO', mode: 'print'},
+                            {operacion:'Reimpresión', tituloPanel3: 'Solicitudes de Reimpresión', mostrarBotonRegistro: false, estado: 'IMPRESO', mode: 'reprint'},
+                            {operacion:'Autorización', tituloPanel3: 'Autorización de Reimpresiones', mostrarBotonRegistro: false, estado: 'REIMPRESO', mode: 'autorize'},
+                            {operacion:'Reportes', tituloPanel3: 'Reportes', mostrarBotonRegistro: false, estado: 'APROBADO', mode:'report'},
+                        ]
+                    },
+                    {
+                        servicio: 'cheques-gerencia',
+                        titulo: 'Cheques de Gerencia',
+                        operaciones: [
+                            {operacion:'Solicitud', tituloPanel3: 'Solicitudes', mostrarBotonRegistro: true, estado: 'SOLICITADO', mode: 'edit'}, 
+                            {operacion:'Impresión', tituloPanel3: 'Impresión', mostrarBotonRegistro: false, estado: 'SOLICITADO|APROBADO', mode: 'print'},
+                            {operacion:'Reimpresión', tituloPanel3: 'Solicitudes de Reimpresión', mostrarBotonRegistro: false, estado: 'IMPRESO', mode:'reprint'},
+                            {operacion:'Autorización', tituloPanel3: 'Autorización de Reimpresiones', mostrarBotonRegistro: false, estado: 'REIMPRESO', mode: 'autorize'},
+                            {operacion:'Reversión', tituloPanel3: 'Reversiones', mostrarBotonRegistro: false, estado: 'APROBADO', mode: 'revert'},
+                            {operacion:'Reportes', tituloPanel3: 'Reportes', mostrarBotonRegistro: false, estado: 'APROBADO', mode:'report'},
+                        ]
+                    },
+                    {
+                        servicio: 'camara-compensacion',
+                        titulo: 'Cámara de Compensación',
+                        operaciones: [
+                            {operacion:'Solicitud Cheque Individual/ACCL', tituloPanel3: 'Solicitudes', mostrarBotonRegistro: true, estado: 'SOLICITADO', mode: 'edit'},
+                            {operacion:'Autorización', tituloPanel3: 'Autorización', mostrarBotonRegistro: false, estado: 'SOLICITADO|APROBADO', mode: 'autorize'},
+                            {operacion:'Rechazo', tituloPanel3: 'Rechazos', mostrarBotonRegistro: false, estado: 'APROBADO', mode:'reject'},
+                            {operacion:'Liberación', tituloPanel3: 'Liberaciones', mostrarBotonRegistro: false, estado: 'APROBADO', mode:'liberate'},
+                            {operacion:'Conciliación', tituloPanel3: 'Conciliaciones', mostrarBotonRegistro: false, estado: 'APROBADO', mode:'conciliate'},
+                            {operacion:'Reportes', tituloPanel3: 'Reportes', mostrarBotonRegistro: false, estado: 'APROBADO', mode:'report'},
+                        ]
+                    },
+                    {
+                        servicio: 'giros-nacionales',
+                        titulo: 'Giros Nacionales',
+                        operaciones: [
+                            {operacion:'Solicitudes', tituloPanel3: 'Solicitudes', mostrarBotonRegistro: true, estado: 'SOLICITADO|RECHAZADO', mode: 'edit'},
+                            //{operacion:'Habilitación', tituloPanel3: 'Habilitación', mostrarBotonRegistro: false, estado: 'SOLICITADO|APROBADO', mode: 'autorize'},
+                            //{operacion:'Modificación', tituloPanel3: 'Modificación', mostrarBotonRegistro: false, estado: 'SOLICITADO|APROBADO', mode: 'autorize'},
+                            {operacion:'Autorización', tituloPanel3: 'Autorización', mostrarBotonRegistro: false, estado: 'SOLICITADO', mode: 'autorize'},
+                            {operacion:'Impresión', tituloPanel3: 'Impresión', mostrarBotonRegistro: false, estado: 'APROBADO', mode: 'print'},
+                            {operacion:'Reportes', tituloPanel3: 'Reportes', mostrarBotonRegistro: false, estado: 'APROBADO', mode:'report'},
+                        ]
+                    },
+                    {
+                        servicio: 'transferencias-programadas',
+                        titulo: 'Transferencias Programadas',
+                        operaciones: [
+                            {operacion:'Habilitación/Suspensión TP', tituloPanel3: 'Habilitación/Suspensión TP', mostrarBotonRegistro: true, estado: 'SOLICITADO', mode: 'edit'},
+                            {operacion:'Registro Programación y Aplicación', tituloPanel3: 'Registro Programación y Aplicación', mostrarBotonRegistro: false, estado: 'SOLICITADO|APROBADO', mode: 'edit'},
+                            {operacion:'Autorización', tituloPanel3: 'Autorización', mostrarBotonRegistro: false, estado: 'SOLICITADO|APROBADO', mode: 'autorize'},
+                            {operacion:'Conciliación', tituloPanel3: 'Conciliaciones', mostrarBotonRegistro: false, estado: 'APROBADO', mode:'conciliate'},
+                            {operacion:'Reportes', tituloPanel3: 'Reportes', mostrarBotonRegistro: false, estado: 'APROBADO', mode:'report'},
+                        ]
+                    },
+                    {
+                        servicio: 'notas-debito-credito',
+                        titulo: 'Notas de Débito y Crédito',
+                        operaciones: [
+                            {operacion:'Solicitud', tituloPanel3: 'Solicitudes', mostrarBotonRegistro: true, estado: 'SOLICITADO', mode: 'edit'},
+                            {operacion:'Autorización', tituloPanel3: 'Autorización', mostrarBotonRegistro: false, estado: 'SOLICITADO|APROBADO', mode: 'autorize'},
+                            {operacion:'Impresión', tituloPanel3: 'Impresión', mostrarBotonRegistro: false, estado: 'APROBADO', mode: 'print'},
+                            {operacion:'Reportes', tituloPanel3: 'Reportes', mostrarBotonRegistro: false, estado: 'APROBADO', mode:'report'},
+                        ]
+                    }  
+                ];
+            
+                if (!localStorage.getItem('servicesModuloServiciosOperativos')) {    
+                localStorage.setItem('servicesModuloServiciosOperativos', JSON.stringify(servicesModuloServiciosOperativos));
+            }
+
+
+
+
+            // Panel 2 toggle functionality
+            $('#panel2Header').click(function() {
+                $('#panel2Content').toggleClass('collapsed');
+                $('#panel2Toggle').toggleClass('collapsed');
+            });
+
+            // Handle operation clicks
+            $(document).on('click', '.operation-item', function() {
+                $('#panel2').removeClass('hidden');
+                $('.operation-item').removeClass('active');
+                //$('.icon-operation').removeClass('collapsed');
+                $('.icon-operation').text('');
+                $(this).addClass('active');
+                console.log($($(this).children()[0])); 
+                //$($(this).children()[0]).addClass('collapsed');
+                $($(this).children()[0]).text('»');
+
+                const operation = $(this).data('operation');
+                const service = $(this).data('service');
+                
+                loadOperationContent(service, operation);
+
+                $('#toggle-services').click();
+
+            });
+
+            // Load operation content
+            function loadOperationContent(service, operation) {
+                $('#page-title').text(`${operation}`);
+                //$('#page-subtitle').text(`Servicio: ${service.replace('-', ' ').toUpperCase()}`);
+                $('#page-subtitle').html(`SERVICIOS OPERATIVOS > ${service.replace('-', ' ').toUpperCase()} > <b>${operation.toUpperCase()}</b>`);
+                
+                if (service === 'gestion-cheques' && operation === 'Solicitud') {
+                    loadSolicitudesChequesCRUD();
+                //} else if (service === 'cheques-gerencia' && operation === 'Solicitud') {
+                } else if (service === 'cheques-gerencia' && ['Solicitud', 'Impresión', 'Reimpresión', 'Reversión','Autorización'].includes(operation) ) {
+                    loadChequesGerenciaCRUD(operation);
+                } else if (service === 'giros-nacionales'  && ['Solicitudes', 'Autorización', 'Impresión', 'Reportes'].includes(operation)) {
+                    loadGirosAutorizacionCRUD(operation);
+                } else if (service === 'notas-debito-credito' && ['Solicitud', 'Autorización', 'Impresión', 'Reportes'].includes(operation)) {
+                    loadNotasDebitoCreditoCRUD(operation);
+                } else {
+                    loadDefaultContent(service, operation);
+                }
+                
+            }
+
+/*******************************************************************************************************************************************/
+
+
+
+            // Get status class
+            function getStatusClass(estado) {
+                switch(estado) {
+                    case 'Pendiente': return 'status-pending';
+                    case 'SOLICITADO': return 'status-pending';
+                    case 'Aprobado': return 'status-approved';
+                    case 'APROBADO': return 'status-approved';
+                    case 'Completado': return 'status-completed';
+                    case 'Rechazado': return 'status-rejected';
+                    case 'RECHAZADO': return 'status-rejected';
+                    case 'PAGADO': return 'status-pagado';
+                    case 'PENDIENTE': return 'status-pendiente';
+                    case 'REVERTIDO': return 'status-revertido';
+                    case 'REVERSION_SOLICITADA': return 'status-pending';
+                    case 'REVERTIDO': return 'status-aproved';
+                    default: return 'status-pending';
+                }
+            }
+
+
+
+            let topAlert = 30;
+            // Utility functions
+            function showAlert(message, type) {
+                topAlert = topAlert + 50
+                const alertHTML = `<div class="alert alert-${type}" style="position: fixed; top: ${topAlert}px; right: 20px; z-index: 3000; min-width: 300px;">${message}</div>`;
+                $('body').append(alertHTML);
+                setTimeout(() => {
+                    $('.alert').fadeOut(() => $('.alert').remove());
+                    topAlert = 30;
+                }, 5000);
+            }
+
+            function showConfirmModal(title, message, onConfirm) {
+                $('#modal-title-confirm').text(title);
+                $('#modal-body-confirm').html(`<p>${message}</p>`);
+                $('#modal-footer-confirm').html(`
+                    <button class="btn btn-danger" onclick="confirmAction()">Confirmar</button>
+                    <button class="btn btn-secondary" onclick="closeModal('-confirm')">Cancelar</button>
+                `);
+                
+                window.confirmAction = onConfirm;
+                $('#modal-confirm').show();
+            }
+
+
+
+            // Load default content for other operations
+            function loadDefaultContent(service, operation) {
+                $('#panel2Content').html(`
+                    <form class="search-form">
+                        <div class="form-group">
+                            <label>Búsqueda General:</label>
+                            <input type="text" placeholder="Ingrese término de búsqueda">
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha:</label>
+                            <input type="date">
+                        </div>
+                        <div class="search-actions">
+                            <button type="button" class="btn btn-primary">🔍 Buscar</button>
+                            <button type="button" class="btn btn-secondary">🗑️ Limpiar</button>
+                        </div>
+                    </form>
+                `);
+
+                $('#panel3Title').text(`📊 ${operation}`);
+                $('#panel3Actions').html(`
+                    <button class="btn btn-success">➕ Nuevo</button>
+                    <button class="btn btn-info">🔄 Actualizar</button>
+                `);
+
+                $('#content-panel-3').html(`
+                    <p>Contenido de ${operation} para ${service.replace('-', ' ').toUpperCase()} se mostrará aquí.</p>
+                    <p>Esta funcionalidad está en desarrollo.</p>
+                `);
+            }
+
+            // Sidebar management
+            function updateContentAreaClasses() {
+                const leftOpen = !$('#leftSidebar').hasClass('hidden');
+                $('#contentArea').removeClass('collapsed');
+                if (!leftOpen) {
+                    $('#contentArea').addClass('collapsed');
+                }
+            }
+
+            $('#toggle-menu').click(function(e) {
+                e.preventDefault();
+                $('#leftSidebar').toggleClass('hidden');
+                updateContentAreaClasses();
+            });
+
+            $('#toggle-services').click(function(e) {
+                e.preventDefault();
+                $('#rightSidebar').toggleClass('active');
+            });
+
+            $('#servicios-operativos').click(function() {
+                //$('#submenu-servicios').slideToggle();
+            });
+
+            $('.submenu-item').click(function() {
+                $('.submenu-item').removeClass('active');
+                $(this).addClass('active');
+                
+                const service = $(this).data('service');
+                const serviceName = $(this).text();
+
+
+                servicesModuloServiciosOperativos.forEach(function(servicio) {
+                    if (servicio.servicio === service) {
+
+                        localStorage.setItem('servicioSeleccionado', JSON.stringify(servicio));
+                        localStorage.setItem('operacionSeleccionada', JSON.stringify({}));
+                        console.log('servicioSeleccionado', servicio)
+
+                        $('#operationsList').empty();
+                        servicio.operaciones.forEach(function(operacion) {
+                            $('#operationsList').append(`
+                                <div class="operation-item" data-operation="${operacion.operacion}" data-service="${service}"><span class="icon-operation"></span> ${operacion.operacion}</div>
+                            `);
+                        });
+                    }
+                });
+
+                
+                //updateOperationsPanel(service, serviceName);
+                $('#operations-title').text(serviceName.toUpperCase());
+                $('#rightSidebar').addClass('active');
+            });
+
+            function updateOperationsPanel(service, serviceName) {
+                $('#operations-title').text(serviceName.toUpperCase());
+                
+                const operations = operationsData[service] || [];
+                let operationsHtml = '';
+                
+                operations.forEach(function(operation) {
+                    operationsHtml += `<div class="operation-item" data-operation="${operation}" data-service="${service}"><span class="icon-operation"></span> ${operation}</div>`;
+                });
+                
+                $('#operationsList').html(operationsHtml);
+            }
+
+            // Modal functionality
+            window.closeModal = function(tipo="") {
+                $('#modal'+tipo).hide();
+                $('#modal-body'+tipo).empty();
+                $('#modal-footer'+tipo).empty();
+                // Remover clase fullscreen al cerrar
+                $('.modal-content'+tipo).removeClass('fullscreen');
+            };
+
+            $('#modal').click(function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+
+            $('#modal-close').click(function() {
+                closeModal();
+            });
+
+            // Other event handlers
+            $('#notifications').click(function() {
+                showAlert('📧 3 nuevas notificaciones', 'info');
+            });
+
+            $('#logout').click(function(e) {
+                e.preventDefault();
+                showConfirmModal(
+                    'Cerrar Sesión',
+                    '¿Está seguro que desea cerrar la sesión?',
+                    () => {
+                        showAlert('Sesión cerrada exitosamente.', 'success');
+                        closeModal();
+                    }
+                );
+            });
+
+            $(window).resize(function() {
+                updateContentAreaClasses();
+            });
+
+            updateContentAreaClasses();
+
+
+
+
+
+        //});
+    </script>
+
+    <script src="gestion-cheques.js"></script>
+    <script src="cheques-gerencia.js"></script>
+    <script src="cheques-gerencia-reversion.js"></script>
+    <script src="giros-nacionales.js"></script>
+    <!-- <script src="notas-debito-credito.js"></script> -->
+    <!-- Antes del cierre de body -->
+</body>
+</html>
